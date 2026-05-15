@@ -1,7 +1,7 @@
 #include "monty.h"
 
 /**
- * push - pushes an integer onto the stack
+ * push - pushes an integer onto the stack (or queue)
  * @stack: double pointer to the top of the stack
  * @line_number: current line number
  */
@@ -9,6 +9,7 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	int value;
 	stack_t *new_node;
+	stack_t *tail;
 
 	if (global.push_arg == NULL || is_integer(global.push_arg) == 0)
 	{
@@ -23,11 +24,32 @@ void push(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = value;
-	new_node->prev = NULL;
-	new_node->next = *stack;
-	if (*stack != NULL)
-		(*stack)->prev = new_node;
-	*stack = new_node;
+
+	if (global.mode == 0)   /* STACK mode – insert at head */
+	{
+		new_node->prev = NULL;
+		new_node->next = *stack;
+		if (*stack != NULL)
+			(*stack)->prev = new_node;
+		*stack = new_node;
+	}
+	else   /* QUEUE mode – insert at tail */
+	{
+		new_node->next = NULL;
+		if (*stack == NULL)
+		{
+			new_node->prev = NULL;
+			*stack = new_node;
+		}
+		else
+		{
+			tail = *stack;
+			while (tail->next != NULL)
+				tail = tail->next;
+			tail->next = new_node;
+			new_node->prev = tail;
+		}
+	}
 }
 
 /**
@@ -46,6 +68,7 @@ void pall(stack_t **stack, unsigned int line_number)
 		current = current->next;
 	}
 }
+
 /**
  * pint - prints the value at the top of the stack
  * @stack: double pointer to the top of the stack
@@ -60,6 +83,7 @@ void pint(stack_t **stack, unsigned int line_number)
 	}
 	printf("%d\n", (*stack)->n);
 }
+
 /**
  * pop - removes the top element of the stack
  * @stack: double pointer to the top of the stack
@@ -80,6 +104,7 @@ void pop(stack_t **stack, unsigned int line_number)
 		(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
  * swap - swaps the top two elements of the stack
  * @stack: double pointer to the top of the stack
@@ -104,6 +129,7 @@ void swap(stack_t **stack, unsigned int line_number)
 	first->prev = second;
 	*stack = second;
 }
+
 /**
  * add - adds the top two elements of the stack
  * @stack: double pointer to the top of the stack
@@ -124,6 +150,7 @@ void add(stack_t **stack, unsigned int line_number)
 	(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
  * nop - doesn’t do anything
  * @stack: double pointer to the top of the stack
@@ -134,6 +161,7 @@ void nop(stack_t **stack, unsigned int line_number)
 	(void)stack;
 	(void)line_number;
 }
+
 /**
  * sub - subtracts the top element from the second top element of the stack
  * @stack: double pointer to the top of the stack
@@ -150,12 +178,13 @@ void sub(stack_t **stack, unsigned int line_number)
 	}
 	temp = *stack;
 	*stack = (*stack)->next;
-	(*stack)->n = (*stack)->n - temp->n;   /* second top minus top */
+	(*stack)->n = (*stack)->n - temp->n;
 	(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
- *op_ div - divides the second top element by the top element of the stack
+ * op_div - divides the second top element by the top element
  * @stack: double pointer to the top of the stack
  * @line_number: current line number
  */
@@ -179,8 +208,9 @@ void op_div(stack_t **stack, unsigned int line_number)
 	(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
- * mul - multiplies the second top element with the top element of the stack
+ * mul - multiplies the second top element with the top element
  * @stack: double pointer to the top of the stack
  * @line_number: current line number
  */
@@ -199,9 +229,10 @@ void mul(stack_t **stack, unsigned int line_number)
 	(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
  * mod - computes the remainder of division of the second top element
- *        by the top element of the stack
+ *        by the top element
  * @stack: double pointer to the top of the stack
  * @line_number: current line number
  */
@@ -225,6 +256,7 @@ void mod(stack_t **stack, unsigned int line_number)
 	(*stack)->prev = NULL;
 	free(temp);
 }
+
 /**
  * pchar - prints the char at the top of the stack
  * @stack: double pointer to the top of the stack
@@ -247,10 +279,11 @@ void pchar(stack_t **stack, unsigned int line_number)
 	}
 	printf("%c\n", c);
 }
+
 /**
  * pstr - prints the string starting at the top of the stack
  * @stack: double pointer to the top of the stack
- * @line_number: current line number (unused)
+ * @line_number: line number (unused)
  */
 void pstr(stack_t **stack, unsigned int line_number)
 {
