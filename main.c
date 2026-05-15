@@ -1,6 +1,6 @@
 #include "monty.h"
 
-char *push_arg = NULL;
+global_t global = {NULL, 0};
 
 /**
  * main - Monty bytecode interpreter
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 		if (opcode == NULL || opcode[0] == '#')
 			continue;
 		arg = strtok(NULL, " \t");
-		push_arg = arg;
+		global.push_arg = arg;
 		execute_instruction(opcode, arg, &stack, line_number);
 	}
 	free_stack(stack);

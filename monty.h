@@ -36,8 +36,18 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* Global variable for push argument */
-extern char *push_arg;
+/**
+ * struct global_s - global data for the interpreter
+ * @push_arg: argument for push opcode
+ * @mode: 0 = stack (LIFO), 1 = queue (FIFO)
+ */
+typedef struct global_s
+{
+	char *push_arg;
+	int mode;
+} global_t;
+
+extern global_t global;
 
 /* Prototypes */
 void push(stack_t **stack, unsigned int line_number);
@@ -55,6 +65,8 @@ void pchar(stack_t **stack, unsigned int line_number);
 void pstr(stack_t **stack, unsigned int line_number);
 void rotl(stack_t **stack, unsigned int line_number);
 void rotr(stack_t **stack, unsigned int line_number);
+void op_stack(stack_t **stack, unsigned int line_number);
+void op_queue(stack_t **stack, unsigned int line_number);
 void execute_instruction(char *opcode, char *arg, stack_t **stack,
 unsigned int line_number);
 void free_stack(stack_t *stack);

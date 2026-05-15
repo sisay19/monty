@@ -51,3 +51,26 @@ void rotr(stack_t **stack, unsigned int line_number)
 	(*stack)->prev = last;
 	*stack = last;
 }
+/**
+ * op_stack - sets the data format to stack (LIFO)
+ * @stack: double pointer to the top of the stack
+ * @line_number: line number (unused)
+ */
+void op_stack(stack_t **stack, unsigned int line_number)
+{
+	(void)stack;
+	(void)line_number;
+	global.mode = 0;
+}
+
+/**
+ * op_queue - sets the data format to queue (FIFO)
+ * @stack: double pointer to the top of the stack
+ * @line_number: line number (unused)
+ */
+void op_queue(stack_t **stack, unsigned int line_number)
+{
+	(void)stack;
+	(void)line_number;
+	global.mode = 1;
+}
