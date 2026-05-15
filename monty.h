@@ -49,6 +49,7 @@ void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 void sub(stack_t **stack, unsigned int line_number);
 void op_div(stack_t **stack, unsigned int line_number);
+void mul(stack_t **stack, unsigned int line_number);
 void execute_instruction(char *opcode, char *arg, stack_t **stack,
 unsigned int line_number);
 void free_stack(stack_t *stack);
