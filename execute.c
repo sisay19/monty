@@ -36,6 +36,8 @@ void execute_instruction(char *opcode, char *arg, stack_t **stack,
 		mod(stack, line_number);
 	else if (strcmp(opcode, "pchar") == 0)
 		pchar(stack, line_number);
+		else if (strcmp(opcode, "pstr") == 0)
+		pstr(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
