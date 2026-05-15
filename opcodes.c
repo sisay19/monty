@@ -10,12 +10,12 @@ void push(stack_t **stack, unsigned int line_number)
 	int value;
 	stack_t *new_node;
 
-	if (push_arg == NULL || is_integer(push_arg) == 0)
+	if (global.push_arg == NULL || is_integer(global.push_arg) == 0)
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	value = atoi(push_arg);
+	value = atoi(global.push_arg);
 	new_node = malloc(sizeof(stack_t));
 	if (new_node == NULL)
 	{
