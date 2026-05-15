@@ -18,6 +18,8 @@ void execute_instruction(char *opcode, char *arg, stack_t **stack,
 		pall(stack, line_number);
 	else if (strcmp(opcode, "pint") == 0)
                 pint(stack, line_number);
+	else if (strcmp(opcode, "pop") == 0)
+		pop(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
